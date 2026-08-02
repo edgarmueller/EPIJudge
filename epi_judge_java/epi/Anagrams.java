@@ -4,16 +4,36 @@ import epi.test_framework.EpiTestComparator;
 import epi.test_framework.GenericTest;
 import epi.test_framework.LexicographicalListComparator;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+
 public class Anagrams {
   @EpiTest(testDataFile = "anagrams.tsv")
 
   public static List<List<String>> findAnagrams(List<String> dictionary) {
-    // TODO - you fill in here.
-    return null;
+    Map<String, List<String>> map = new HashMap<>();
+    for (String word : dictionary) {
+      map.computeIfAbsent(sortString(word), k -> new ArrayList<>()).add(word);
+    }
+
+    List<List<String>> result = new ArrayList<>();
+    for  (Map.Entry<String, List<String>> entry : map.entrySet()) {
+      List<String> group = entry.getValue();
+      if (group.size() >= 2) {
+        result.add(group);
+      }
+    }
+    // result.sort(Comparator.comparingInt(List::size));
+    return result;
   }
+
+  private static String sortString(String word) {
+    char[] chars = word.toCharArray();
+    Arrays.sort(chars);
+    return new String(chars);
+  }
+
   @EpiTestComparator
   public static boolean comp(List<List<String>> expected,
                              List<List<String>> result) {
