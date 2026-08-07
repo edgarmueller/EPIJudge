@@ -6,7 +6,17 @@ import epi.test_framework.TimedExecutor;
 public class IsListCyclic {
 
   public static ListNode<Integer> hasCycle(ListNode<Integer> head) {
-    // TODO - you fill in here.
+    ListNode<Integer> slow = head, fast = head;
+    while (slow != null) {
+      slow = slow.next;
+      if (fast == null || fast.next == null) {
+        return null;
+      }
+      fast = fast.next.next;
+      if (slow == fast) {
+        return slow;
+      }
+    }
     return null;
   }
   @EpiTest(testDataFile = "is_list_cyclic.tsv")

@@ -4,26 +4,38 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 public class StackWithMax {
 
   public static class Stack {
+
+    private static class StackElementWithMax {
+      Integer value;
+      Integer cachedMax;
+    }
+
+    private List<StackElementWithMax> s = new ArrayList<>();
+
     public boolean empty() {
-      // TODO - you fill in here.
-      return true;
+      return s.isEmpty();
     }
     public Integer max() {
-      // TODO - you fill in here.
-      return 0;
+      return this.s.getLast().cachedMax;
     }
     public Integer pop() {
-      // TODO - you fill in here.
-      return 0;
+      return s.removeLast().value;
     }
     public void push(Integer x) {
-      // TODO - you fill in here.
-      return;
+      StackElementWithMax el = new StackElementWithMax();
+      if (this.empty() || this.max() < x) {
+        el.cachedMax = x;
+      } else {
+        el.cachedMax = this.max();
+      }
+      el.value = x;
+      s.add(el);
     }
   }
   @EpiUserType(ctorParams = {String.class, int.class})
